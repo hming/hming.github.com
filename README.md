@@ -1,4 +1,4 @@
-# NPC日志（NPC blog）
+# NPC日志 (NPC blog)
 
 作者：hming
 
