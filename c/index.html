@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>计算器</title>
+	</head>
+
+	<body>
+		<ul>
+			<li> <a href="index.html">标准</a>
+			</li>
+			<li> <a href="shudanfan.html">输单返还</a>
+			</li>
+		</ul>
+		<h3>标准计算器</h3>
+		<table>
+			<tr>
+				<td>上盘:</td>
+				<td>
+					<input class="yp" type="text" id="sp_s" style="width: 40px;" maxlength="5" placeholder="水位">
+				</td>
+				<td>
+					<input class="yp" type="text" id="sp_t" style="width: 80px;" placeholder="投注">
+				</td>
+			</tr>
+			<tr>
+				<td>下盘:</td>
+				<td>
+					<input class="yp" type="text" id="xp_s" style="width: 40px;" maxlength="5" placeholder="水位">
+
+				</td>
+				<td>
+					<input class="yp" type="text" id="xp_t" style="width: 80px;" placeholder="投注">
+				</td>
+			</tr>
+			<tr>
+				<td>盈利:</td>
+				<td colspan="2"><strong id="yl"></strong> </td>
+			</tr>
+		</table>
+		<br />
+		<table>
+			<tr>
+				<td>胜:</td>
+				<td>
+					<input class="op" type="text" id="pl_s" style="width: 40px;" maxlength="5" placeholder="賠率">
+				</td>
+				<td>
+					<input class="op" type="text" id="tz_s" style="width: 80px;" placeholder="投注">
+				</td>
+			</tr>
+			<tr>
+				<td>负:</td>
+				<td>
+					<input class="op" type="text" id="pl_f" style="width: 40px;" maxlength="5" placeholder="賠率">
+				</td>
+				<td>
+					<input class="op" type="text" id="tz_f" style="width: 80px;" placeholder="投注">
+				</td>
+			</tr>
+			<tr>
+				<td>平:</td>
+				<td>
+					<input class="op" type="text" id="pl_p" style="width: 40px;" maxlength="5" placeholder="賠率">
+				</td>
+				<td>
+					<input class="op" type="text" id="tz_p" style="width: 80px;" placeholder="投注">
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<input class="op" type="text" id="fhl" style="width: 40px;" maxlength="5" placeholder="返还率">
+				</td>
+				<td>
+					<input class="op" type="text" id="ze" style="width: 80px;" placeholder="总额">
+				</td>
+			</tr>
+
+		</table>
+	</body>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script>
+		$(function() {
+			$(".yp").keyup(function() {
+				var sp_t = $('#sp_t');
+				var sp_s = $('#sp_s');
+				var xp_t = $('#xp_t');
+				var xp_s = $('#xp_s');
+				var yl = $('#yl');
+				if ($(this).prop('id') == 'sp_t') {
+					xp_t.val((parseFloat(sp_t.val()) * (1.0 + parseFloat(sp_s.val())) / (1.0 + parseFloat(xp_s.val()))).toFixed(2));
+				}
+				if ($(this).prop('id') == 'xp_t') {
+					sp_t.val((parseFloat(xp_t.val()) * (1.0 + parseFloat(xp_s.val())) / (1.0 + parseFloat(sp_s.val()))).toFixed(2));
+				}
+				yl_num = parseFloat(sp_t.val()) * parseFloat(sp_s.val()) - parseFloat(xp_t.val());
+				yl.text(yl_num.toFixed(2));
+			});
+			$(".op").keyup(function() {
+				var pl_s = $('#pl_s');
+				var tz_s = $('#tz_s');
+				var pl_f = $('#pl_f');
+				var tz_f = $('#tz_f');
+				var pl_p = $('#pl_p');
+				var tz_p = $('#tz_p');
+				var fhl = $('#fhl');
+				var ze = $('#ze');
+				var yl = $('#yl');
+				var fhl_v = 1 / (1 / parseFloat(pl_s.val()) + 1 / parseFloat(pl_f.val()) + 1 / parseFloat(pl_p.val()));
+				fhl.val(fhl_v);
+				if ($(this).prop('id') == 'tz_s') {
+					var fh = parseFloat(pl_s.val()) * parseFloat(tz_s.val())
+					var tz_f_v = fh / parseFloat(pl_f.val());
+					var tz_p_v = fh / parseFloat(pl_p.val());
+					tz_f.val(tz_f_v);
+					tz_p.val(tz_p_v);
+					var ze_v = parseFloat(tz_s.val()) + tz_f_v + tz_p_v;
+					ze.val(ze_v);
+				}
+				if ($(this).prop('id') == 'tz_f') {
+					var fh = parseFloat(pl_f.val()) * parseFloat(tz_f.val())
+					var tz_s_v = fh / parseFloat(pl_s.val());
+					var tz_p_v = fh / parseFloat(pl_p.val());
+					tz_s.val(tz_s_v);
+					tz_p.val(tz_p_v);
+					var ze_v = tz_s_v + parseFloat(tz_f.val()) + tz_p_v;
+					ze.val(ze_v);
+				}
+				if ($(this).prop('id') == 'tz_p') {
+					var fh = parseFloat(pl_p.val()) * parseFloat(tz_p.val())
+					var tz_s_v = fh / parseFloat(pl_s.val());
+					var tz_f_v = fh / parseFloat(pl_f.val());
+					tz_s.val(tz_s_v);
+					tz_f.val(tz_f_v);
+					var ze_v = tz_s_v + tz_f_v + parseFloat(tz_p.val());
+					ze.val(ze_v);
+				}
+			});
+		});
+	</script>
+
+</html>

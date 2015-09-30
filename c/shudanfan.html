@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>输单返水</title>
+	</head>
+
+	<body>
+		<ul>
+			<li> <a href="index.html">标准</a>
+			</li>
+			<li> <a href="shudanfan.html">输单返还</a>
+			</li>
+		</ul>
+		<h3>输单返水</h3>
+		<table>
+			<tr>
+				<td>上盘:</td>
+				<td>
+					<input class="yp" type="text" id="sp_s" style="width: 40px;" maxlength="5" placeholder="水位">
+				</td>
+				<td>
+					<input class="yp" type="text" id="sp_t" style="width: 80px;" placeholder="投注">
+				</td>
+				<td>
+					<input class="yp" type="text" id="sp_fs" style="width: 80px;" placeholder="返水" value="0">
+				</td>
+			</tr>
+			<tr>
+				<td>下盘:</td>
+				<td>
+					<input class="yp" type="text" id="xp_s" style="width: 40px;" maxlength="5" placeholder="水位">
+
+				</td>
+				<td>
+					<input class="yp" type="text" id="xp_t" style="width: 80px;" placeholder="投注">
+				</td>
+				<td>
+					<input class="yp" type="text" id="xp_fs" style="width: 80px;" placeholder="返水" value="0">
+				</td>
+			</tr>
+			<tr>
+				<td>盈利:</td>
+				<td colspan="2"><strong id="yl"></strong> </td>
+			</tr>
+		</table>
+		<br />
+	</body>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script>
+		$(function() {
+			$(".yp").keyup(function() {
+				var sp_t = $('#sp_t');
+				var sp_s = $('#sp_s');
+				var sp_fs = parseFloat($('#sp_fs').val());
+				var xp_t = $('#xp_t');
+				var xp_s = $('#xp_s');
+				var xp_fs = parseFloat($('#xp_fs').val());
+				var yl = $('#yl');
+				if ($(this).prop('id') == 'sp_t') {
+					xp_t.val((parseFloat(sp_t.val()) * (1.0 + parseFloat(sp_s.val()) - sp_fs) / (1.0 + parseFloat(xp_s.val())- xp_fs)).toFixed(2));
+				}
+				if ($(this).prop('id') == 'xp_t') {
+					sp_t.val((parseFloat(xp_t.val()) * (1.0 + parseFloat(xp_s.val()) - xp_fs) / (1.0 + parseFloat(sp_s.val())- sp_fs)).toFixed(2));
+				}
+				yl_num = parseFloat(sp_t.val()) * parseFloat(sp_s.val()) - (1-xp_fs)*parseFloat(xp_t.val());
+				yl.text(yl_num.toFixed(2));
+			});
+		});
+	</script>
+
+</html>
